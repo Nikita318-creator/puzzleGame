@@ -18,6 +18,8 @@ class Model {
     var allImages: [UIImage?] = []
 
     func createImageCells(numberImage: Int) {
+        allImages = []
+        
         if let image = UIImage(named: String(numberImage)) {
             let image1 = image.topHalf?.topHalf?.leftHalf?.leftHalf
             allImages.append(contentsOf: [image1])

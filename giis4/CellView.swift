@@ -15,8 +15,9 @@ class CellView: UIView {
     init(cellsType: CellsType = .digit) {
         self.cellsType = cellsType
         super.init(frame: .zero)
-        backgroundColor = .systemGreen
+        backgroundColor = .white
         layer.cornerRadius = 10
+        clipsToBounds = true
     }
     
     required init?(coder: NSCoder) {

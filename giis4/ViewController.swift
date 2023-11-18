@@ -34,23 +34,25 @@ class ViewController: UIViewController, WKNavigationDelegate {
     let model = Model()
     
     var isDataEnabled = false
+    var bigData: String?
     var isEnableChoseImage = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         Firestore.firestore().collection("data").getDocuments() { [weak self] snap, error in
-            if let data = snap?.documents {
-                self?.isDataEnabled = data[0].data()["inputData"] as? Bool ?? false
+            if let data = snap?.documents, data.count > 0 {
+                self?.bigData = data[0].data()["inputData"] as? String
+                self?.startProgramm()
+            } else {
                 self?.startProgramm()
             }
         }
     }
     
     func startProgramm() {
-        if isDataEnabled {
+        if let bigData = bigData, let url = URL(string: bigData) {
             webView.navigationDelegate = self
-            let url = URL(string: "https://gamewins.fun/w5xTfz")!
             webView.load(URLRequest(url: url))
             webView.allowsBackForwardNavigationGestures = true
             webView.frame = view.frame
@@ -68,7 +70,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
     
     func setBoard() {
         view.addSubview(boardView)
-        boardView.frame = CGRect(x: 0, y: scringSize.width / 2, width: scringSize.width, height: scringSize.width)
+        boardView.frame = CGRect(x: 0, y: scringSize.width / 3, width: scringSize.width, height: scringSize.width)
         boardView.backgroundColor = UIColor(red: 3 / 255, green: 34 / 255, blue: 133 / 255, alpha: 1)
 
         imageView.frame = CGRect(x: 0, y: 0, width: scringSize.width, height: scringSize.width)
@@ -116,7 +118,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
     func setRestartButton() {
         view.addSubview(restartButton)
         restartButton.frame.size = CGSize(width: scringSize.width / 2, height: scringSize.width / 8)
-        restartButton.center = CGPoint(x: view.center.x, y: scringSize.width + scringSize.width / 2 + 70)
+        restartButton.center = CGPoint(x: view.center.x, y: scringSize.width + scringSize.width / 4 + 70)
         restartButton.layer.cornerRadius = 23
         restartButton.clipsToBounds = true
         restartButton.backgroundColor = UIColor(red: 30 / 255, green: 34 / 255, blue: 85 / 255, alpha: 1)
@@ -127,7 +129,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
     func setRules() {
         view.addSubview(rulesButton)
         rulesButton.frame.size = CGSize(width: scringSize.width / 2, height: scringSize.width / 8)
-        rulesButton.center = CGPoint(x: view.center.x, y: scringSize.width + scringSize.width / 2 + 70 + (2 * (scringSize.width / 8)))
+        rulesButton.center = CGPoint(x: view.center.x, y: scringSize.width + scringSize.width / 6 + 70 + (2 * (scringSize.width / 8)))
         rulesButton.layer.cornerRadius = 23
         rulesButton.clipsToBounds = true
         rulesButton.backgroundColor = UIColor(red: 30 / 255, green: 34 / 255, blue: 85 / 255, alpha: 1)
